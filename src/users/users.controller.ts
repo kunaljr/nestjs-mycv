@@ -9,13 +9,17 @@ import {
   Delete,
   NotFoundException,
   Session,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { CurrentUser } from './decorators/current-user.decorator';
 import { UserDto } from './dtos/user.dto';
+import { User } from './user.entity';
+import { AuthGuard } from '../guards/auth.guard';
 @Controller('auth')
 @Serialize(UserDto)
 export class UsersController {
@@ -25,8 +29,9 @@ export class UsersController {
   ) {}
 
   @Get('/whoami')
-  whoami(@Session() session: any) {
-    return this.userService.findOne(session.userId);
+  @UseGuards(AuthGuard)
+  whoami(@CurrentUser() user: User) {
+    return user;
   }
 
   @Post('/signup')
@@ -41,6 +46,11 @@ export class UsersController {
     const user = await this.authService.signin(body.email, body.password);
     session.userId = user.id;
     return user;
+  }
+
+  @Post('/signout')
+  signout(@Session() session: any) {
+    session.userId = null;
   }
 
   @Get('/:id')
