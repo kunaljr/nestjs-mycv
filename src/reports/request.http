@@ -10,3 +10,14 @@ content-type: application/json
     "lat": 1,
     "long": 1
 }
+
+### Aprove an existing report 
+PATCH http://localhost:3000/reports/1
+content-type: application/json
+
+{
+    "approved": true
+}
+
+### Get an estimate for a existing vehicle
+GET http://localhost:3000/reports?make=Toyota&model=Corolla&year=2020&mileage=15000&lat=1&long=1
