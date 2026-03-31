@@ -2,7 +2,7 @@ POST http://localhost:3000/reports
 content-type: application/json
 
 {
-    "make": "ford",
+    "make": "ford1",
     "model": "mustang",
     "year": 1982,
     "mileage": 50000,
@@ -12,7 +12,7 @@ content-type: application/json
 }
 
 ### Aprove an existing report 
-PATCH http://localhost:3000/reports/1
+PATCH http://localhost:3000/reports/2
 content-type: application/json
 
 {
